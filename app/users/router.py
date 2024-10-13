@@ -8,13 +8,6 @@ from app.users.dao import UsersDAO
 from app.users.schemas import SUserRegister, SUserAuth, Token
 from app.users.dependencies import get_current_user
 
-""" Маршруты для аутентификации и авторизации пользователей
-() register_user: Регистрирует пользователя, проверяя наличие пользователя с таким же email в базе данных, а затем создает новую запись пользователя.
-() auth_user: Проверяет учетные данные пользователя и отправляет токен доступа и токен обновления, если аутентификация прошла успешно.
-() refresh_access_token: Проверяет токен обновления и создает новый токен доступа (обновляет его), если токен обновления действителен.
-() logout_user: Удаляет токен доступа и выходит из системы.
-"""
-
 router = APIRouter(prefix='/auth', tags=['Auth'])
 
 
