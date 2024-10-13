@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <base href="https://auth.example.com/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и Авторизация</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles/auth.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Регистрация</h1>
+        <form id="authForm">
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <input type="password" id="confirmPassword" placeholder="Подтвердите пароль" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <div class="oauth-buttons">
+            <button class="oauth-button google">Google</button>
+            <button class="oauth-button facebook">Facebook</button>
+        </div>
+        <p class="toggle" id="toggleAuth">Уже есть аккаунт? Войти</p>
+    </div>
+
+    <script src="{{ url_for('static', path='js/auth.js') }}"></script>
+</body>
+</html>
