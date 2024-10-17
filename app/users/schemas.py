@@ -12,6 +12,6 @@ class SUserAuth(BaseModel): # модель данных для авториза�
     email: EmailStr = Field(..., description="Электронная почта")
     password: str = Field(..., min_length=5, max_length=50, description="Пароль, от 5 до 50 знаков")
 
-class Token(BaseModel): # модель токена доступа
+class Token(BaseModel): # модель токена доступа, содержащий поля для доступного токена и типа токена
     access_token: str
     token_type: str
