@@ -27,15 +27,15 @@ def create_refresh_token(data: dict) -> str:
     return create_access_token(data, expires_delta=timedelta(days=30))  # refresh токена 30 дней
 
 
-def get_password_hash(password: str) -> str:
+def get_password_hash(password: str) -> str: # хеширует пароль
     return pwd_context.hash(password)
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+def verify_password(plain_password: str, hashed_password: str) -> bool: # проверяет соответствие обычного пароля и хешированного пароля
     return pwd_context.verify(plain_password, hashed_password)
 
 
-async def authenticate_user(email: EmailStr, password: str):
+async def authenticate_user(email: EmailStr, password: str): # аутентификация пользователя на основе переданных email и пароля
     user = await UsersDAO.find_one_or_none(email=email)
     if not user or not verify_password(plain_password=password, hashed_password=user.hashed_password):
         return None
