@@ -2,6 +2,12 @@ from sqlalchemy import String, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base
 
+""" Создаёт модель пользователя
+() id: идентификатор пользователя
+() name: имя пользователя
+() hashed_password: хешированный пароль
+() email: Email пользователя
+"""
 
 class User(Base):
     __tablename__ = 'users'
