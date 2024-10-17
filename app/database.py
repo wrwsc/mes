@@ -8,6 +8,6 @@ engine = create_async_engine(url=database_url)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession)
 
 
-class Base(AsyncAttrs, DeclarativeBase):
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+class Base(AsyncAttrs, DeclarativeBase): # класс для моделей (таблиц) базы данных
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now()) # хранит временную метку, когда запись была создана
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now()) # хранит временную метку, когда запись была последний раз обновлена
