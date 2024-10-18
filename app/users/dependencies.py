@@ -1,9 +1,10 @@
 from fastapi import Request, HTTPException, status, Depends
 from app.exceptions import TokenExpiredException, NoJwtException, NoUserIdException, TokenNoFoundException
+from datetime import datetime, timedelta, timezone
+from typing import Annotated
 from jose import jwt, JWTError
 from datetime import datetime, timezone
 from app.config import get_auth_data
-from app.users.dao import UsersDAO
 from app.users.auth import oauth2_scheme
 
 def get_token(request: Request):
@@ -28,8 +29,3 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     user_id: str = payload.get('sub')
     if not user_id:
         raise NoUserIdException
-
-    user = await UsersDAO.find_one_or_none_by_id(int(user_id))
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
-    return user
