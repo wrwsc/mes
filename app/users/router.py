@@ -20,13 +20,15 @@ async def login_in_gitlab(code: str):
         raise HTTPException(status_code=400, detail='Неверный код авторизации')
 
     #Достаем информацию о пользователе с GitLAb и регистрируем его на сайте
-    user_info_url = ...
-    headers = ...
-    responce = requests.get(user_info_url, headers=headers)
-    if responce.statuc_code != 200:
+    user_info_url = "https://gitlab.com/api/v4/user"
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+    response = requests.get(user_info_url, headers=headers)
+    if response.statuc_code != 200:
         raise HTTPException(status_code=400, detail='Не удалось получить информацию о пользователе')
 
-    user_info = responce.json()
+    user_info = response.json()
 
     user = await UsersDAO.find_one_or_none(email=user_info['email'])
     # Если пользователь не существует, то мы его зарегестрируем
@@ -49,6 +51,6 @@ async def login_in_gitlab(code: str):
         'message': 'Авторизация через GitLab прошла успешна!'
     }
 
-@router.get("/", response_class=HTMLResponse, summary="Страница авторизации")
-async def get_categories(request: Request):
+@router.get("/", response_class=HTMLResponse)
+async def get_auth_page(request: Request):
     return templates.TemplateResponse("auth.html", {"request": request})

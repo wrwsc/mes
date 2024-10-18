@@ -6,6 +6,8 @@ from jose import jwt, JWTError
 from datetime import datetime, timezone
 from app.config import get_auth_data
 from app.users.auth import oauth2_scheme
+from app.users.dao import UsersDAO
+
 
 def get_token(request: Request):
     token = request.cookies.get('users_access_token')
@@ -29,3 +31,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     user_id: str = payload.get('sub')
     if not user_id:
         raise NoUserIdException
+
+    user = await UsersDAO.find_one_or_none(user_id)
+    if not user:
+        raise NoUserIdException
+
+    return user
