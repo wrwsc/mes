@@ -12,7 +12,7 @@ app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Разрешить запросы с любых источников. Можете ограничить список доменов
+    allow_origins=["*"],  # Разрешить запросы с любых источников. Можно ограничить список доменов
     allow_credentials=True,
     allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE и т.д.)
     allow_headers=["*"],  # Разрешить все заголовки
