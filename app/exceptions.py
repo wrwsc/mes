@@ -1,24 +1,40 @@
-from fastapi import status, HTTPException
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
+from fastapi.exceptions import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from app.exceptions import TokenExpiredException, TokenNoFoundException
+from app.users.router import router as users_router
+from app.chat.router import router as chat_router
+
+app = FastAPI()
+app.mount('/static', StaticFiles(directory='app/static'), name='static')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Разрешить запросы с любых источников. Можете ограничить список доменов
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE и т.д.)
+    allow_headers=["*"],  # Разрешить все заголовки
+)
+
+app.include_router(users_router)
+app.include_router(chat_router)
 
 
-class TokenExpiredException(HTTPException):
-    def __init__(self):
-        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail="Токен истек")
+@app.get("/")
+async def redirect_to_auth():
+    return RedirectResponse(url="/auth")
 
 
-class TokenNoFoundException(HTTPException):
-    def __init__(self):
-        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail="Токен не найден")
+@app.exception_handler(TokenExpiredException)
+async def token_expired_exception_handler(request: Request, exc: HTTPException):
+    # Возвращаем редирект на страницу /auth
+    return RedirectResponse(url="/auth")
 
 
-UserAlreadyExistsException = HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Пользователь уже существует')
-
-PasswordMismatchException = HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Пароли не совпадают!')
-
-IncorrectEmailOrPasswordException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Неверная почта или пароль')
-
-NoJwtException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен не валидный!')
-
-NoUserIdException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Не найден ID пользователя')
-
-ForbiddenException = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Недостаточно прав!')
+# Обработчик для TokenNoFound
+@app.exception_handler(TokenNoFoundException)
+async def token_no_found_exception_handler(request: Request, exc: HTTPException):
+    # Возвращаем редирект на страницу /auth
+    return RedirectResponse(url="/auth")

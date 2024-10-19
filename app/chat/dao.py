@@ -28,4 +28,3 @@ class MessagesDAO(BaseDAO):
             ).order_by(cls.model.id)
             result = await session.execute(query)
             return result.scalars().all()
-

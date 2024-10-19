@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <base href="https://auth.example.com/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация и Авторизация</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='styles/auth.css') }}">
-</head>
+    <title>Авторизация через gitlab</title>
+    <link rel="stylesheet" href="styles/auth.css">
 <body>
-    <div class="container">
-        <h1 id="title">Регистрация</h1>
-        <form id="authForm">
-            <input type="text" id="username" placeholder="Имя пользователя" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Пароль" required>
-            <input type="password" id="confirmPassword" placeholder="Подтвердите пароль" required>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        <div class="oauth-buttons">
-            <button class="oauth-button google">Google</button>
-            <button class="oauth-button facebook">Facebook</button>
+        <div class="auth-container">
+          <h1>Авторизация</h1>
+          <a href="https://gitlab.com/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=https://your-app.com/callback&response_type=code&state=YOUR_STATE" class="gitlab-button">
+            <svg class="gitlab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M23.955 13.587l-1.342-4.135-2.664-8.189a.455.455 0 0 0-.867 0L16.418 9.45H7.582L4.918 1.263a.455.455 0 0 0-.867 0L1.386 9.45.044 13.587a.924.924 0 0 0 .331 1.006L12 23.054l11.625-8.461a.924.924 0 0 0 .33-1.006"/>
+            </svg>
+            Войти через GitLab
+          </a>
         </div>
-        <p class="toggle" id="toggleAuth">Уже есть аккаунт? Войти</p>
-    </div>
 
     <script src="{{ url_for('static', path='js/auth.js') }}"></script>
 </body>
