@@ -3,14 +3,12 @@ from app.users.models import User
 from sqlalchemy.future import select
 
 class UsersDAO:
-    # Выполняет запрос к базе данных и возвращает пользователя с указанным email
     @staticmethod
     async def find_one_or_none(email: str):
         async with async_session_maker() as session:
             result = await session.execute(select(User).filter_by(email=email))
             return result.scalar_one_or_none()
 
-    # Выполняет добавление пользователя в базу данных
     @staticmethod
     async def add(name: str, email: str, hashed_password: str):
         async with async_session_maker() as session:
