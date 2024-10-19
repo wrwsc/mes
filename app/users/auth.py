@@ -6,7 +6,9 @@ from jose import jwt
 from app.config import get_auth_data
 import os
 import requests
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto") # создание объекта pwd_context, который используется для хеширования паролей
+
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
     authorizationUrl="https://gitlab.com/oauth/authorize",
     tokenUrl="https://gitlab.com/oauth/token"
@@ -14,6 +16,7 @@ oauth2_scheme = OAuth2AuthorizationCodeBearer(
 
 GITLAB_CLIENT_ID = os.getenv('GITLAB_CLIENT_ID') # идентификатор для авторизации пользователя в GitLab API
 GITLAB_CLIENT_SECRET = os.getenv('GITLAB_CLIENT_SECRET') # секретный ключ, который используется для шифрования и расшифровки данных пользователя
+
 # Создаёт токен доступа
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     to_encode = data.copy() # копирование данных из переменной data в переменную to_encode
@@ -50,10 +53,12 @@ async def authenticate_user_in_gitlab(code: str):
         "grant_type": "authorization_code",
         "redirect_uri": "http://your-redirect-uri"
     }
+
     # Отправление POST запроса на адрес, переданный в token_url, c данными, переданными в data
     response = requests.post(token_url, data=data)
     if response.status_code != 200:
         return None
+
     # Из полученного JSON ответа извлекается токен доступа
     token = response.json().get("access_token")
     return token
